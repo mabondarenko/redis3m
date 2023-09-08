@@ -111,7 +111,7 @@ public:
         // pack model attributes
         std::map<std::string, std::string> attributes = model.to_map();
         std::vector<std::string> attributes_vector;
-        typedef std::pair<std::string, std::string> strpair;
+        typedef std::pair<const std::string, std::string> strpair;
         for(const strpair& item : attributes)
         {
             attributes_vector.push_back(item.first);

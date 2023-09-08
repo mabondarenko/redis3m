@@ -53,7 +53,7 @@ public:
      * @param id identifier of object
      * @param map serialized fields
      */
-    model(const std::string& id, const std::map<std::string, std::string>& map):
+    model(const std::string& id, [[maybe_unused]] const std::map<std::string, std::string>& map):
         _id(id),
         _loaded(true)
     {
