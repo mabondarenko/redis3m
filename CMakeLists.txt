@@ -49,7 +49,7 @@ target_link_libraries(${PROJECT_NAME} hiredis ${REDIS3M_BOOST_LIBS})
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${REDIS3M_VERSION_STRING}
                                            SOVERSION ${REDIS3M_VERSION_MAJOR})
 set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_DEFINITIONS_RELEASE "DATADIR=\"${datadir}\"")
-set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_DEFINITIONS_DEBUG "DATADIR=\"${CMAKE_SOURCE_DIR}/data\"")
+set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_DEFINITIONS_DEBUG "DATADIR=\"${CMAKE_CURRENT_SOURCE_DIR}/data\"")
 
 # Static version
 add_library(${PROJECT_NAME}-static STATIC ${SRC_FILES} ${CMAKE_CURRENT_BINARY_DIR}/datadir.cpp ${INCLUDE_FILES})
@@ -57,16 +57,16 @@ target_link_libraries(${PROJECT_NAME}-static hiredis ${REDIS3M_BOOST_LIBS})
 set_target_properties(${PROJECT_NAME}-static PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
 
 install (TARGETS ${PROJECT_NAME} DESTINATION lib${LIB_SUFFIX})
-install (DIRECTORY "${CMAKE_SOURCE_DIR}/include/${PROJECT_NAME}" DESTINATION include)
+install (DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}" DESTINATION include)
 set_target_properties(${PROJECT_NAME}-static PROPERTIES COMPILE_DEFINITIONS_RELEASE "DATADIR=\"${datadir}\"")
-set_target_properties(${PROJECT_NAME}-static PROPERTIES COMPILE_DEFINITIONS_DEBUG "DATADIR=\"${CMAKE_SOURCE_DIR}/data\"")
+set_target_properties(${PROJECT_NAME}-static PROPERTIES COMPILE_DEFINITIONS_DEBUG "DATADIR=\"${CMAKE_CURRENT_SOURCE_DIR}/data\"")
 
 if(NOT DEFINED CMAKE_INSTALL_LIBDIR)
     set(CMAKE_INSTALL_LIBDIR lib${LIB_SUFFIX})
 endif(NOT DEFINED CMAKE_INSTALL_LIBDIR)
 
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc" DESTINATION ${libdir}/pkgconfig)
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/data/lua" DESTINATION ${datadir})
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data/lua" DESTINATION ${datadir})
 
 # Tests
 add_executable(connection_test tests/connection.cpp tests/common.h)
@@ -95,7 +95,7 @@ add_test (NAME patterns COMMAND patterns_test)
 # Docs
 FIND_PACKAGE(Doxygen QUIET)
 IF (DOXYGEN_FOUND)
-        SET(DOXYGEN_INPUT "${CMAKE_SOURCE_DIR}/Doxyfile")
+        SET(DOXYGEN_INPUT "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile")
   SET(DOXYGEN_OUTPUT "docs")
 
   ADD_CUSTOM_COMMAND(
