@@ -10,12 +10,15 @@ endif()
 find_package(Boost COMPONENTS system filesystem unit_test_framework date_time regex REQUIRED)
 find_package(Threads REQUIRED)
 
+set(NO_BOOST ON)
+
 # to be used from command line: cmake NO_BOOST=YES
 if(NO_BOOST)
   set(NO_BOOST_CFLAG -DNO_BOOST)
 else(NO_BOOST)
   set(REDIS3M_BOOST_INC ${Boost_INCLUDE_DIRS})
-  set(REDIS3M_BOOST_LIBS ${Boost_REGEX_LIBRARY} ${Boost_DATE_TIME_LIBRARY})
+  #set(REDIS3M_BOOST_LIBS ${Boost_REGEX_LIBRARY} ${Boost_DATE_TIME_LIBRARY})
+  set(REDIS3M_BOOST_LIBS Boost::regex Boost::date_time)
 endif(NO_BOOST)
 
 set(REDIS3M_VERSION_MAJOR 9)
@@ -68,6 +71,7 @@ endif(NOT DEFINED CMAKE_INSTALL_LIBDIR)
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc" DESTINATION ${libdir}/pkgconfig)
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data/lua" DESTINATION ${datadir})
 
+if(NOT NO_BOOST)
 # Tests
 add_executable(connection_test tests/connection.cpp tests/common.h)
 target_link_libraries(connection_test ${PROJECT_NAME}-static ${Boost_FILESYSTEM_LIBRARY}
@@ -91,6 +95,8 @@ enable_testing ()
 add_test (NAME connection COMMAND connection_test)
 #add_test (NAME connection_pool COMMAND connection_pool_test)
 add_test (NAME patterns COMMAND patterns_test)
+
+endif(NOT NO_BOOST)
 
 # Docs
 FIND_PACKAGE(Doxygen QUIET)
